@@ -1,13 +1,41 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const liens = [
+  { nom: "Accueil", href: "/", icone: "🏠" },
+  { nom: "Patients", href: "/patients", icone: "👥" },
+  { nom: "Consultations", href: "/consultations", icone: "📋" },
+  { nom: "Dashboard", href: "/dashboard", icone: "📊" },
+  { nom: "Profil", href: "/profil", icone: "👤" },
+];
+
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
-    <aside className="w-64 bg-gray-800 text-white min-h-screen p-4">
-      <nav>
-        <ul className="space-y-2">
-          <li className="p-2 hover:bg-gray-700 rounded">Tableau de bord</li>
-          <li className="p-2 hover:bg-gray-700 rounded">Patients</li>
-          <li className="p-2 hover:bg-gray-700 rounded">Consultations</li>
-          <li className="p-2 hover:bg-gray-700 rounded">Alertes IA</li>
-        </ul>
+    <aside className="w-64 bg-teal-800 text-white min-h-screen p-4">
+      <nav className="space-y-2 mt-4">
+        {liens.map((lien) => {
+          const actif = pathname === lien.href;
+          return (
+            <Link
+              key={lien.href}
+              href={lien.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+                actif
+                  ? "bg-teal-600 font-bold"
+                  : "hover:bg-teal-700"
+              }`}
+            >
+              <span className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-sm">
+                {lien.icone}
+              </span>
+              {lien.nom}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );
