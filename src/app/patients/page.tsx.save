@@ -1,0 +1,5 @@
+import PatientCard from " @/components/PatientCard" ;
+
+export default function PatientsPage() {
+
+const patients = [ { nom: " Aminata Sow" , }
