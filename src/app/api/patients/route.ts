@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { NextResponse } from "next/server";
 
-// GET /api/patients --- Lister tous les patients
 export async function GET() {
   const session = await getServerSession(authOptions);
+  
   if (!session) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
@@ -16,16 +16,17 @@ export async function GET() {
     });
     return NextResponse.json(patients);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: "Erreur lors de la récupération" },
+      { error: "Erreur lors de la récupération des patients" },
       { status: 500 }
     );
   }
 }
 
-// POST /api/patients --- Créer un patient
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
+  
   if (!session) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
@@ -45,8 +46,9 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(patient, { status: 201 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: "Erreur lors de la création" },
+      { error: "Erreur lors de la création du patient" },
       { status: 500 }
     );
   }
