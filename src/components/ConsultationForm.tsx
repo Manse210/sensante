@@ -23,7 +23,7 @@ export default function ConsultationForm({
   onSuccess: () => void;
 }) {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [symptomes, setSymptomes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function ConsultationForm({
   }, []);
 
   function toggleSymptome(s: string) {
-    setSymptoms((prev) =>
+    setSymptomes((prev) =>
       prev.includes(s)
         ? prev.filter((x) => x !== s)
         : [...prev, s]
@@ -42,7 +42,7 @@ export default function ConsultationForm({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (symptoms.length === 0) {
+    if (symptomes.length === 0) {
       alert("Cochez au moins un symptôme.");
       return;
     }
@@ -53,13 +53,13 @@ export default function ConsultationForm({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         patientId: Number(formData.get("patientId")),
-        symptoms: symptoms,
+        symptomes: symptomes,
         notes: formData.get("notes"),
       }),
     });
 
     if (res.ok) {
-      setSymptoms([]);
+      setSymptomes([]);
       e.currentTarget.reset();
       onSuccess();
     }
@@ -90,21 +90,21 @@ export default function ConsultationForm({
       {/* Section 2 : Symptômes */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Symptômes ({symptoms.length} sélectionnés)
+          Symptômes ({symptomes.length} sélectionnés)
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {SYMPTOMES_DISPONIBLES.map((s) => (
             <label
               key={s}
               className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition ${
-                symptoms.includes(s)
+                symptomes.includes(s)
                   ? "bg-orange-50 border-orange-400"
                   : "hover:bg-gray-50"
               }`}
             >
               <input
                 type="checkbox"
-                checked={symptoms.includes(s)}
+                checked={symptomes.includes(s)}
                 onChange={() => toggleSymptome(s)}
                 className="accent-orange-500"
               />
