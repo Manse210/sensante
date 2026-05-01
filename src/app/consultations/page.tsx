@@ -6,7 +6,7 @@ import ConsultationForm from "@/components/ConsultationForm";
 interface Consultation {
   id: number;
   date: string;
-  symptoms: string[];
+  symptomes: string[];
   diagnosticIa: string | null;
   confiance: number | null;
   statut: string;
@@ -75,7 +75,7 @@ export default function ConsultationsPage() {
               </div>
 
               <div className="flex flex-wrap gap-2 mt-3">
-                {c.symptoms.map((s, i) => (
+                {c.symptomes.map((s, i) => (
                   <span
                     key={i}
                     className="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full"
