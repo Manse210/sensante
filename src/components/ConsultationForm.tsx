@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Patient {
   id: number;
@@ -31,6 +31,7 @@ export default function ConsultationForm({
       .then((res) => res.json())
       .then(setPatients);
   }, []);
+  const formRef = useRef<HTMLFormElement>(null);
 
   function toggleSymptome(s: string) {
     setSymptomes((prev) =>
@@ -53,6 +54,7 @@ export default function ConsultationForm({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         patientId: Number(formData.get("patientId")),
+
         symptomes: symptomes,
         notes: formData.get("notes"),
       }),
@@ -60,14 +62,14 @@ export default function ConsultationForm({
 
     if (res.ok) {
       setSymptomes([]);
-      e.currentTarget.reset();
+      formRef.current?.reset();
       onSuccess();
     }
     setLoading(false);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
       <h3 className="text-lg font-bold text-gray-800">
         Nouvelle consultation
       </h3>
