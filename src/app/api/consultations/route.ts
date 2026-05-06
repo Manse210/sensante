@@ -56,6 +56,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(consultation, { status: 201 });
   } catch (error) {
+    console.error("ERREUR CONSULTATION:", error);
     return NextResponse.json(
       { error: "Erreur lors de la création" },
       { status: 500 }

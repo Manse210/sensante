@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ConsultationForm from "@/components/ConsultationForm";
+import DiagnosticIA from "@/components/DiagnosticIA";
 
 interface Consultation {
   id: number;
@@ -75,7 +76,7 @@ export default function ConsultationsPage() {
               </div>
 
               <div className="flex flex-wrap gap-2 mt-3">
-                {c.symptomes.map((s, i) => (
+			{(c.symptomes as string[]).map((s, i) => (
                   <span
                     key={i}
                     className="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full"
@@ -89,20 +90,12 @@ export default function ConsultationsPage() {
                 <p className="text-sm text-gray-600 mt-3 italic">{c.notes}</p>
               )}
 
-              {c.diagnosticIa ? (
-                <div className="mt-3 p-3 bg-red-50 rounded-lg">
-                  <p className="text-sm font-bold text-red-700">
-                    Diagnostic IA : {c.diagnosticIa}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Confiance : {c.confiance}%
-                  </p>
-                </div>
-              ) : (
-                <p className="text-xs text-gray-400 mt-3 italic">
-                  Diagnostic IA en attente (Lab IA - v0.5)
-                </p>
-              )}
+              <DiagnosticIA
+		consultationId={c.id}
+		diagnosticExistant={c.diagnosticIa}
+		confianceExistante={c.confiance}
+		onDiagnostic={charger}
+	      />
             </div>
           ))}
         </div>
