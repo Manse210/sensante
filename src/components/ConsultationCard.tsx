@@ -18,7 +18,7 @@ export default function ConsultationCard({ patient, date, symptomes, statut }: C
       </div>
       <p className="text-sm text-blue-600 font-medium mb-2">{date}</p>
       <div className="bg-gray-50 p-3 rounded-lg">
-        <p className="text-sm text-gray-700 italic">"{symptomes}"</p>
+        <p className="text-sm text-gray-700 italic">&quot;{symptomes}&quot;</p>
       </div>
     </div>
   );

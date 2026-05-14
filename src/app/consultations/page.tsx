@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ConsultationForm from "@/components/ConsultationForm";
 import DiagnosticIA from "@/components/DiagnosticIA";
 
@@ -23,16 +23,19 @@ export default function ConsultationsPage() {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function charger() {
+  const charger = useCallback(async () => {
     const res = await fetch("/api/consultations");
     const data = await res.json();
     setConsultations(data);
     setLoading(false);
-  }
+  }, []);
 
   useEffect(() => {
-    charger();
-  }, []);
+    const fetchStats = async () => {
+      await charger();
+    };
+    fetchStats();
+  }, [charger]);
 
   return (
     <div>
@@ -53,7 +56,10 @@ export default function ConsultationsPage() {
       ) : (
         <div className="space-y-4">
           {consultations.map((c) => (
-            <div key={c.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-400">
+            <div
+              key={c.id}
+              className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-400"
+            >
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-bold text-gray-800">
@@ -66,24 +72,25 @@ export default function ConsultationsPage() {
                 </div>
                 <span
                   className={`text-xs px-3 py-1 rounded-full ${
-                    c.statut === "termine"
+                    c.statut === "termine" || c.statut === "terminé"
                       ? "bg-green-100 text-green-700"
                       : "bg-yellow-100 text-yellow-700"
                   }`}
                 >
-                  {c.statut === "termine" ? "Terminé" : "En attente"}
+                  {c.statut === "termine" || c.statut === "terminé" ? "Terminé" : "En attente"}
                 </span>
               </div>
 
               <div className="flex flex-wrap gap-2 mt-3">
-			{(c.symptomes as string[]).map((s, i) => (
-                  <span
-                    key={i}
-                    className="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full"
-                  >
-                    {s}
-                  </span>
-                ))}
+                {Array.isArray(c.symptomes) &&
+                  c.symptomes.map((s, i) => (
+                    <span
+                      key={i}
+                      className="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full"
+                    >
+                      {s}
+                    </span>
+                  ))}
               </div>
 
               {c.notes && (
@@ -91,11 +98,11 @@ export default function ConsultationsPage() {
               )}
 
               <DiagnosticIA
-		consultationId={c.id}
-		diagnosticExistant={c.diagnosticIa}
-		confianceExistante={c.confiance}
-		onDiagnostic={charger}
-	      />
+                consultationId={c.id}
+                diagnosticExistant={c.diagnosticIa}
+                confianceExistante={c.confiance}
+                onDiagnostic={charger}
+              />
             </div>
           ))}
         </div>

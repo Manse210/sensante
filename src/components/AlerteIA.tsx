@@ -17,7 +17,7 @@ export default function AlerteIA({ diagnostic, confiance, niveau }: AlerteIAProp
       <p className="mt-2 text-gray-700">{diagnostic}</p>
       <p className="text-sm text-gray-500 mt-1">Confiance : {confiance}%</p>
       <p className="text-xs text-gray-400 italic mt-3">
-        Ceci n'est pas un diagnostic médical. Consultez un professionnel de santé.
+        Ceci n&apos;est pas un diagnostic médical. Consultez un professionnel de santé.
       </p>
     </div>
   );
