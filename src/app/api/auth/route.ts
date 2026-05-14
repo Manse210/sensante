@@ -1,1 +1,5 @@
-// NextAuth sera configuré dans le Lab Auth
+export async function GET() {
+  return Response.json({
+    message: "Auth route active",
+  });
+}
