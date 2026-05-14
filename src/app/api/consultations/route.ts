@@ -35,8 +35,12 @@ export async function POST(request: Request) {
     }
     if (typeof patientId === "string") patientId = parseInt(patientId, 10);
 
+    if (!session.user?.email) {
+      return NextResponse.json({ error: "Utilisateur non identifié" }, { status: 400 });
+    }
+
     const user = await prisma.user.findUnique({
-      where: { email: session.user?.email! },
+      where: { email: session.user.email },
     });
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
