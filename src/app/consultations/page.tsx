@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ConsultationForm from "@/components/ConsultationForm";
 import DiagnosticIA from "@/components/DiagnosticIA";
 
@@ -23,16 +23,19 @@ export default function ConsultationsPage() {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function charger() {
+  const charger = useCallback(async () => {
     const res = await fetch("/api/consultations");
     const data = await res.json();
     setConsultations(data);
     setLoading(false);
-  }
+  }, []);
 
   useEffect(() => {
-    charger();
-  }, []);
+    const fetchStats = async () => {
+      await charger();
+    };
+    fetchStats();
+  }, [charger]);
 
   return (
     <div>

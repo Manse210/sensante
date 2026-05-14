@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import PatientCard from "@/components/PatientCard";
 import PatientForm from "@/components/PatientForm";
 
@@ -20,7 +20,7 @@ export default function PatientsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function chargerPatients() {
+  const chargerPatients = useCallback(async () => {
     try {
       setLoading(true);
       const res = await fetch("/api/patients");
@@ -32,17 +32,21 @@ export default function PatientsPage() {
         setPatients([]);
         setError(data.error || "Erreur de chargement");
       }
-    } catch (err) {
+    } catch (_err) {
+      console.error("Erreur chargement patients:", _err);
       setPatients([]);
       setError("Erreur de connexion au serveur");
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    chargerPatients();
-  }, []);
+    const fetchPatients = async () => {
+      await chargerPatients();
+    };
+    fetchPatients();
+  }, [chargerPatients]);
 
   function calculerAge(dateNaissance: string): number {
     const naissance = new Date(dateNaissance);
