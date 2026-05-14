@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       data: {
         patientId,
         userId: user.id,
-        symptomes: body.symptoms ?? [],   // ← champ CORRECT : symptomes
+        symptomes: body.symptomes ?? body.symptoms ?? [],
         notes: body.notes ?? null,
         statut: "en_attente",
       },

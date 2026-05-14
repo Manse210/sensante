@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Patient {
   id: number;
@@ -26,7 +26,7 @@ const SYMPTOMES_DISPONIBLES = [
 
 export default function ConsultationForm({ onSuccess }: { onSuccess: () => void }) {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [symptomes, setSymptomes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ConsultationForm({ onSuccess }: { onSuccess: () => void 
   }, []);
 
   function toggleSymptome(s: string) {
-    setSymptoms((prev) =>
+    setSymptomes((prev) =>
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
     );
   }
@@ -45,7 +45,7 @@ export default function ConsultationForm({ onSuccess }: { onSuccess: () => void 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (symptoms.length === 0) {
+    if (symptomes.length === 0) {
       alert("Veuillez cocher au moins un symptôme.");
       return;
     }
@@ -63,7 +63,7 @@ export default function ConsultationForm({ onSuccess }: { onSuccess: () => void 
 
     const payload = {
       patientId: parseInt(patientIdValue as string, 10),
-      symptoms: symptoms,
+      symptomes: symptomes,
       notes: formData.get("notes") || null,
     };
 
@@ -76,7 +76,7 @@ export default function ConsultationForm({ onSuccess }: { onSuccess: () => void 
 
       if (res.ok) {
         // ✅ Réinitialisation du formulaire
-        setSymptoms([]);
+        setSymptomes([]);
         (e.target as HTMLFormElement).reset();
         onSuccess();
       } else {
@@ -120,14 +120,21 @@ export default function ConsultationForm({ onSuccess }: { onSuccess: () => void 
       {/* Symptômes (checkboxes) */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Symptômes ({symptoms.length} sélectionné(s)) *
+          Symptômes ({symptomes.length} sélectionné(s)) *
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {SYMPTOMES_DISPONIBLES.map((s) => (
-            <label key={s} className="flex items-center gap-2 cursor-pointer">
+            <label
+              key={s}
+              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition ${
+                symptomes.includes(s)
+                  ? "bg-orange-50 border-orange-400"
+                  : "hover:bg-gray-50"
+              }`}
+            >
               <input
                 type="checkbox"
-                checked={symptoms.includes(s)}
+                checked={symptomes.includes(s)}
                 onChange={() => toggleSymptome(s)}
                 className="w-4 h-4 text-orange-600 focus:ring-orange-500"
               />
