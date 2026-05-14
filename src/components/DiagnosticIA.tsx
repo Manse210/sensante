@@ -50,7 +50,7 @@ export default function DiagnosticIA({
         <p className="text-sm text-gray-700 mt-1">{diagnosticExistant}</p>
         <p className="text-xs text-gray-500 mt-1">Confiance : {confianceExistante}%</p>
         <p className="text-xs text-gray-400 italic mt-2">
-          Ceci n'est pas un diagnostic médical.
+          Ceci n&apos;est pas un diagnostic médical.
         </p>
       </div>
     );
@@ -92,7 +92,7 @@ export default function DiagnosticIA({
             </div>
           </div>
           <p className="text-xs text-gray-400 italic mt-3">
-            Ceci n'est pas un diagnostic médical. Consultez un professionnel de santé.
+            Ceci n&apos;est pas un diagnostic médical. Consultez un professionnel de santé.
           </p>
         </div>
       )}

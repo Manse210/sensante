@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("ERREUR REGISTER:", error);
     return NextResponse.json(
       { error: "Erreur lors de l'inscription" },
       { status: 500 }
